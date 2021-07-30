@@ -8,10 +8,23 @@ const imgs = [
     '<img src="assets/unicornparrot.gif" alt="unicornparrot"'
 ]
 let intervalId;
+let timerInterval;
+let time = 0;
+
 
 initGame();
 
+
+
+function startTimer() {
+    const timer = document.querySelector(".timer");
+    timer.innerHTML = time;
+    time++;
+}
+
 function initGame() {
+    
+    timerInterval = setInterval(startTimer, 1000);
     let cardsNumber;
     do {
         cardsNumber = Number(prompt("Com quantas cartas você quer jogar? Escolha um número par de 4 a 14."));
@@ -30,15 +43,16 @@ let plays = 0;
 
 function launchGame(cardsNumber) {
     verifyPair();
-    isVictory(cardsNumber);
-    
+    isVictory(cardsNumber);    
 }
 
 function isVictory(cardsNumber){
     let correctCards = document.querySelectorAll(".correct");
     if (correctCards.length == cardsNumber) {
         alert("Parabéns! Você ganhou em "+ plays+ " jogadas.");
+        clearInterval(timerInterval);
         clearInterval(intervalId);
+        
         return true;
     }
     return false;

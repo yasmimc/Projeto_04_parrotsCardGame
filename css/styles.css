@@ -7,6 +7,18 @@ body {
     flex-direction: column;
     align-items: center;
     margin: 40px 100px;
+    position: relative;
+}
+
+.timer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 5px;    
+    
+    background-color: #75B79E;
+    color: #EEF9BF;    
+    font-family: 'Roboto', sans-serif;
 }
 
 .title {
