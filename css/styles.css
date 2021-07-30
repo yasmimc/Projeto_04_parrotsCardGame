@@ -88,4 +88,7 @@ body {
     .title {
         font-size: 36px;
     }
+    .container {
+        margin: 40px 50px;
+    }
 }
