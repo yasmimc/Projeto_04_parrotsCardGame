@@ -19,13 +19,28 @@ function initGame() {
             cardsNumber = null;
         }     
     } while (!cardsNumber);
-    startGame(cardsNumber);
-}
-
-function startGame(cardsNumber) {
     alert("O jogo vai começar com " + cardsNumber + " cartas!");
 
     addCards(cardsNumber);
+    setInterval (startGame, 1000);
+    
+}
+
+function startGame() {
+    let selectedCards = document.querySelectorAll(".selected"); 
+
+    if (selectedCards[0] && selectedCards[1]) {
+        if (selectedCards[0].innerHTML===selectedCards[1].innerHTML) {
+            for (let i = 0; i < selectedCards.length; i++) {
+                selectedCards[i].classList.add("correct");   
+                selectedCards[i].classList.remove("selected");            
+            }
+        }
+        else {
+            setTimeout(turnDown, 1000, selectedCards);
+        }
+        selectedCards = [];        
+    }   
 }
 
 function addCards(number) {
@@ -50,7 +65,16 @@ function addCards(number) {
 }
 
 function turnUp (selectedCard) {
-    selectedCard.classList.add("selected") 
+    const selectedCards = document.querySelectorAll(".selected");
+    if (selectedCards.length !== 2) {
+        selectedCard.classList.add("selected"); 
+    }
+}
+
+function turnDown (cards) {
+    for (let i = 0; i < cards.length; i++) {
+        cards[i].classList.remove("selected");            
+    }
 }
 
 function shuffle (array) {

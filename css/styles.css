@@ -64,6 +64,14 @@ body {
     transform: rotateY(-180deg);
 }
 
+.card.correct .back-face {
+    transform: rotateY(0deg);
+}
+
+.card.correct .front-face {
+    transform: rotateY(-180deg);
+}
+
 @media (max-width: 600px) {
     .title {
         font-size: 36px;
