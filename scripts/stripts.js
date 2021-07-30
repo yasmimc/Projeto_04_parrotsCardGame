@@ -7,6 +7,7 @@ const imgs = [
     '<img src="assets/tripletsparrot.gif" alt="tripletsparrot"',
     '<img src="assets/unicornparrot.gif" alt="unicornparrot"'
 ]
+let intervalId;
 
 initGame();
 
@@ -22,18 +23,35 @@ function initGame() {
     alert("O jogo vai começar com " + cardsNumber + " cartas!");
 
     addCards(cardsNumber);
-    setInterval (startGame, 1000);
+    intervalId = setInterval(launchGame, 1000, cardsNumber);
+    
+}
+let plays = 0;
+
+function launchGame(cardsNumber) {
+    verifyPair();
+    isVictory(cardsNumber);
     
 }
 
-function startGame() {
+function isVictory(cardsNumber){
+    let correctCards = document.querySelectorAll(".correct");
+    if (correctCards.length == cardsNumber) {
+        alert("Parabéns! Você ganhou em "+ plays+ " jogadas.");
+        clearInterval(intervalId);
+        return true;
+    }
+    return false;
+}
+
+function verifyPair () {
+
     let selectedCards = document.querySelectorAll(".selected"); 
 
     if (selectedCards[0] && selectedCards[1]) {
         if (selectedCards[0].innerHTML===selectedCards[1].innerHTML) {
             for (let i = 0; i < selectedCards.length; i++) {
-                selectedCards[i].classList.add("correct");   
-                selectedCards[i].classList.remove("selected");            
+                scorePoints(selectedCards);        
             }
         }
         else {
@@ -41,6 +59,13 @@ function startGame() {
         }
         selectedCards = [];        
     }   
+}
+function scorePoints (selectedCards) {
+    for (let i = 0; i < selectedCards.length; i++) {
+        selectedCards[i].classList.add("correct");   
+        selectedCards[i].classList.remove("selected");            
+    }   
+    
 }
 
 function addCards(number) {
@@ -65,9 +90,12 @@ function addCards(number) {
 }
 
 function turnUp (selectedCard) {
-    const selectedCards = document.querySelectorAll(".selected");
-    if (selectedCards.length !== 2) {
-        selectedCard.classList.add("selected"); 
+    if(!selectedCard.querySelector(".selected")){
+        const selectedCards = document.querySelectorAll(".selected");
+        if (selectedCards.length !== 2) {
+            selectedCard.classList.add("selected"); 
+        }
+        plays++;
     }
 }
 
