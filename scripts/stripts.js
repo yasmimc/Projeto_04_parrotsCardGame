@@ -43,7 +43,28 @@ let plays = 0;
 
 function launchGame(cardsNumber) {
     verifyPair();
-    isVictory(cardsNumber);    
+    if(isVictory(cardsNumber)){
+        if(playAgain()){
+            restartGame();
+        }
+    }
+}
+
+function restartGame() {
+    plays = 0;
+    time = 0;
+    const timer = document.querySelector(".timer");
+    timer.innerHTML = 0;
+    removeCards();            
+    initGame();
+}
+
+function playAgain(){
+    let answer = prompt("Gostaria de jogar novamente?");
+    if (answer !== "sim"){
+        playAgain();
+    }
+    return true;
 }
 
 function isVictory(cardsNumber){
@@ -103,13 +124,19 @@ function addCards(number) {
     }
 }
 
+function removeCards(){
+    const gameContent = document.querySelector(".game-content");
+    gameContent.innerHTML = "";
+}
+
 function turnUp (selectedCard) {
-    if(!selectedCard.querySelector(".selected")){
+    if(!selectedCard.classList.contains("selected")){
         const selectedCards = document.querySelectorAll(".selected");
         if (selectedCards.length !== 2) {
             selectedCard.classList.add("selected"); 
         }
         plays++;
+        console.log(plays);
     }
 }
 
