@@ -14,8 +14,6 @@ let time = 0;
 
 initGame();
 
-
-
 function startTimer() {
     const timer = document.querySelector(".timer");
     timer.innerHTML = time;
@@ -23,6 +21,9 @@ function startTimer() {
 }
 
 function initGame() {
+
+    const name = prompt ("Qual o seu nome?");
+    localStorage.setItem ('name', name);
     
     timerInterval = setInterval(startTimer, 1000);
     let cardsNumber;
@@ -38,16 +39,66 @@ function initGame() {
     addCards(cardsNumber);
     intervalId = setInterval(launchGame, 1000, cardsNumber);
     
+    
 }
 let plays = 0;
 
 function launchGame(cardsNumber) {
     verifyPair();
     if(isVictory(cardsNumber)){
+        saveScore ();
         if(playAgain()){
             restartGame();
         }
     }
+}
+
+function saveScore() {
+    const name = localStorage.getItem('name');    
+    const score = {
+        name, 
+        score: plays
+    }
+
+    let rank = JSON.parse(localStorage.getItem('rank'));
+    if (!rank){
+        rank = [];
+    }   
+
+    rank.push(score);
+    localStorage.setItem('rank', JSON.stringify(rank));
+    
+}
+
+function showRank(button) {
+	if (button.innerHTML === "VER RANK"){
+		button.innerHTML = "JOGAR";
+	}
+	else {
+		button.innerHTML = "VER RANK";
+	}
+	const gameContent = document.querySelector(".game-content");
+	gameContent.classList.toggle("hide");
+    const rankList = JSON.parse(localStorage.getItem('rank'));
+	rankList.sort(crescent);
+    const scoreBoard = document.querySelector(".score-board");
+	scoreBoard.classList.toggle("show");
+    scoreBoard.innerHTML = "<div class='player-score title'<span>NOME</span><span class='points'>PONTOS</span></div>"
+    for (let i = 0; i < rankList.length; i++) {
+        scoreBoard.innerHTML += "<div class='player-score'<span class='name'>" + rankList[i].name + "</span><div class='points'>" + rankList[i].score + "</div></div>"
+        
+    }
+
+}
+
+function crescent(a, b){
+	if (a.score > b.score)
+	return -1;
+
+	if (a.score < b.score)
+	return 1;
+
+	return 0;	
 }
 
 function restartGame() {
@@ -136,7 +187,6 @@ function turnUp (selectedCard) {
             selectedCard.classList.add("selected"); 
         }
         plays++;
-        console.log(plays);
     }
 }
 
