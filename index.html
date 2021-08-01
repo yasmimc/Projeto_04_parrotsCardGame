@@ -21,10 +21,16 @@
 <body>
 	<div class="container">
 		<button class="rank" onclick="showRank(this);">VER RANK</button>
+		<button class="hide newGame" onclick="restartGame();">NOVO JOGO</button>
 		<div class="timer">0</div>
 		<div class="title">PARROT CARD GAME</div>
 		<div class="game-content"></div>
-		<div class="score-board"></div>
+		<div class="score-board">
+			<div class='player-score title'>
+				<div class='name'>NOME</div>
+				<div class='points'>CARTAS</div>
+				<div class='points'>RODADAS</div>
+		</div>
 	</div>
 	<script src="scripts/stripts.js"></script>
 </body>

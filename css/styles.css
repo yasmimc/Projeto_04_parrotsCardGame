@@ -15,7 +15,7 @@ body {
     display: none;
 }
 
-.game-content.hide {
+.game-content.hide, .hide {
 	display: none;
 }
 
@@ -29,6 +29,19 @@ button.rank{
     font-family: "Roboto", sans-serif;
     border: none;
     border-radius: 5px;
+}
+
+button.newGame{
+    position: fixed;
+    right: 0;
+    top: 0;
+    padding: 5px;
+    background-color: #75b79e;
+    color: #eef9bf;
+    font-family: "Roboto", sans-serif;
+    border: none;
+    border-radius: 5px;
+	z-index: 1;
 }
 
 .score-board.show {
