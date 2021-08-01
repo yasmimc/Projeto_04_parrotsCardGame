@@ -12,7 +12,7 @@ let timerInterval;
 let time = 0;
 
 
-initGame();
+// initGame();
 
 function startTimer() {
     const timer = document.querySelector(".timer");
@@ -44,6 +44,7 @@ function initGame() {
 let plays = 0;
 
 function launchGame(cardsNumber) {
+	localStorage.setItem('cardsNumber', cardsNumber);
     verifyPair();
     if(isVictory(cardsNumber)){
         saveScore ();
@@ -54,9 +55,11 @@ function launchGame(cardsNumber) {
 }
 
 function saveScore() {
-    const name = localStorage.getItem('name');    
+    const name = localStorage.getItem('name');
+	const cardsNumber = localStorage.getItem('cardsNumber');    
     const score = {
         name, 
+		cardsNumber,
         score: plays
     }
 
@@ -80,22 +83,33 @@ function showRank(button) {
 	const gameContent = document.querySelector(".game-content");
 	gameContent.classList.toggle("hide");
     const rankList = JSON.parse(localStorage.getItem('rank'));
-	rankList.sort(crescent);
+	rankList.sort(byPlays);
+	rankList.sort(byCardsNumber);
     const scoreBoard = document.querySelector(".score-board");
 	scoreBoard.classList.toggle("show");
-    scoreBoard.innerHTML = "<div class='player-score title'<span>NOME</span><span class='points'>PONTOS</span></div>"
+    scoreBoard.innerHTML = "<div class='player-score title'><div class='name'>NOME</div><div class='points'>CARTAS</div><div class='points'>RODADAS</div></div>"
     for (let i = 0; i < rankList.length; i++) {
-        scoreBoard.innerHTML += "<div class='player-score'<span class='name'>" + rankList[i].name + "</span><div class='points'>" + rankList[i].score + "</div></div>"
+        scoreBoard.innerHTML += "<div class='player-score'><div class='name'>" + rankList[i].name + "</div><div class='points'>" + rankList[i].cardsNumber + "</div><div class='points'>" + rankList[i].score + "</div></div>"
         
     }
 
 }
 
-function crescent(a, b){
-	if (a.score > b.score)
+function byPlays(a, b){
+	if (a.score < b.score)
 	return -1;
 
-	if (a.score < b.score)
+	if (a.score > b.score)
+	return 1;
+
+	return 0;	
+}
+
+function byCardsNumber(a, b){
+	if (a.cardsNumber > b.cardsNumber)
+	return -1;
+
+	if (a.cardsNumber < b.cardsNumber)
 	return 1;
 
 	return 0;	

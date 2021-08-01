@@ -48,14 +48,20 @@ button.rank{
 
 .score-board .player-score {
     display: flex;
+	flex-direction: initial;
     justify-content: space-between;
     padding: 3px;
 }
 
 .score-board .player-score.title {
-    font-size: inherit;
+    font-size: 18px;
     color: #eef9bf;
     margin-bottom: 15px;
+}
+
+.score-board .name {
+    display: flex;
+    width: 65px;
 }
 
 .score-board .points {
