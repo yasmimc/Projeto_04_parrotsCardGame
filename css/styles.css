@@ -61,7 +61,7 @@ button.newGame{
     padding: 3px;
 }
 
-.score-board .player-score:nth-child(2n) {
+.score-board .player-score:nth-child(even) {
 	background-color: #eef9bf3b;
 }
 

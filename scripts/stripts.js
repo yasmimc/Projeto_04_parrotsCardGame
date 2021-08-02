@@ -65,7 +65,7 @@ function addCards(number) {
 				'<div class="back-face face">' +
 					cards[i] +
 				'</div>' +
-			'</div>'
+			'</div>';
 	}
 }
 
@@ -122,7 +122,7 @@ function saveScore() {
 		name,
 		cardsNumber,
 		score: plays
-	}
+	};
 
 	let rank = JSON.parse(localStorage.getItem('rank'));
 	if (!rank) {
@@ -190,15 +190,27 @@ function turnDown(cards) {
 }
 
 function showRank(button) {	
-	const rankList = JSON.parse(localStorage.getItem('rank'));
+	const MAX_RANK_SIZE = 15;
+	let rankList = JSON.parse(localStorage.getItem('rank'));
 	const scoreBoard = document.querySelector(".score-board");
 
 	if (rankList) {
+		rankList = rankList.slice(0, MAX_RANK_SIZE);
 		rankList.sort(byPlays);
 		rankList.sort(byCardsNumber);
-		scoreBoard.innerHTML = "<div class='player-score title'><div class='name'>NOME</div><div class='points'>CARTAS</div><div class='points'>RODADAS</div></div>";
+		scoreBoard.innerHTML = 
+		"<div class='player-score title'>" +
+			"<div class='name'>NOME</div>" +
+			"<div class='points'>CARTAS</div>" +
+			"<div class='points'>RODADAS</div>" +
+		"</div>";
 		for (let i = 0; i < rankList.length; i++) {
-			scoreBoard.innerHTML += "<div class='player-score'><div class='name'>" + rankList[i].name + "</div><div class='points'>" + rankList[i].cardsNumber + "</div><div class='points'>" + rankList[i].score + "</div></div>";
+			scoreBoard.innerHTML += 
+			"<div class='player-score'>" +
+				"<div class='name'>" + rankList[i].name + 
+				"</div><div class='points'>" + rankList[i].cardsNumber + 
+				"</div><div class='points'>" + rankList[i].score + "</div>" +
+			"</div>";
 		}
 	}
 
