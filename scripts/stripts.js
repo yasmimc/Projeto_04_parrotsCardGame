@@ -151,7 +151,10 @@ function restartGame() {
 }
 
 function askPlayerName() {
-	const name = prompt("Qual o seu nome?");
+	let name = prompt("Qual o seu nome?");
+	if(!name){
+		name = "Sem nome";
+	}
 	localStorage.setItem('name', name);
 }
 

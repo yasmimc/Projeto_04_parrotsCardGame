@@ -50,7 +50,7 @@ button.newGame{
     background-color: #75b79e;
     border-radius: 5%;
 	position: absolute;
-	width: 300px;
+	width: 400px;
 	top: 150px;	
 }
 
@@ -61,6 +61,10 @@ button.newGame{
     padding: 3px;
 }
 
+.score-board .player-score:nth-child(2n) {
+	background-color: #eef9bf3b;
+}
+
 .score-board .player-score.title {
     font-size: 18px;
     color: #eef9bf;
@@ -69,12 +73,12 @@ button.newGame{
 
 .score-board .name {
     display: flex;
-    width: 65px;
+    width: 100px;
 }
 
 .score-board .points {
     display: flex;
-    width: 65px;
+    width: 100px;
     justify-content: center;
 }
 
