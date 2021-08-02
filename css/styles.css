@@ -11,11 +11,7 @@ body {
 	align-items: center;
 }
 
-.score-board {
-    display: none;
-}
-
-.game-content.hide, .hide {
+.game-content.hide, .hide, .score-board {
 	display: none;
 }
 
@@ -26,9 +22,9 @@ button.rank{
     padding: 5px;
     background-color: #75b79e;
     color: #eef9bf;
-    font-family: "Roboto", sans-serif;
     border: none;
     border-radius: 5px;
+    font-family: "Roboto", sans-serif;
 }
 
 button.newGame{
@@ -38,14 +34,14 @@ button.newGame{
     padding: 5px;
     background-color: #75b79e;
     color: #eef9bf;
-    font-family: "Roboto", sans-serif;
     border: none;
     border-radius: 5px;
 	z-index: 1;
+    font-family: "Roboto", sans-serif;
+
 }
 
-.score-board.show {
-    
+.score-board.show {    
     padding: 20px;
     color: #eef9bf;
     display: flex;
@@ -55,8 +51,7 @@ button.newGame{
     border-radius: 5%;
 	position: absolute;
 	width: 300px;
-	top: 150px;
-	
+	top: 150px;	
 }
 
 .score-board .player-score {
@@ -91,11 +86,9 @@ button.newGame{
     border-radius: 5px;
     background-color: #75b79e;
     color: #eef9bf;
-    font-family: "Roboto", sans-serif;
 }
 
 .title {
-    font-family: "Roboto", sans-serif;
     font-weight: 700;
     font-size: 56px;
     color: #75b79e;

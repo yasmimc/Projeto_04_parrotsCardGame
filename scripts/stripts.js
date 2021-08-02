@@ -1,3 +1,4 @@
+//CARD IMGS DATASET 
 const imgs = [
 	'<img src="assets/bobrossparrot.gif" alt="bobrossparrot"',
 	'<img src="assets/explodyparrot.gif" alt="explodyparrot"',
@@ -7,12 +8,11 @@ const imgs = [
 	'<img src="assets/tripletsparrot.gif" alt="tripletsparrot"',
 	'<img src="assets/unicornparrot.gif" alt="unicornparrot"'
 ]
+
+// TIMER GLOBAL VARIABLES AND FUNCTION
 let intervalId;
 let timerInterval;
-let time = 0;
-
-
-initGame();
+let time;
 
 function startTimer() {
 	const timer = document.querySelector(".timer");
@@ -20,38 +20,97 @@ function startTimer() {
 	time++;
 }
 
-function initGame() {
+// GLOBAL VARIABLE THAT COUNTS HOW MANY TIMES A CARD HAS BEEN TURNED OVER
+let plays;
 
-	const name = prompt("Qual o seu nome?");
-	localStorage.setItem('name', name);
+initGame();
+
+function initGame() {
+	//inicializing global variables
+	plays = 0;
+	time = 0;
+	document.querySelector(".timer").innerHTML = 0;
+
+	askPlayerName();
 
 	timerInterval = setInterval(startTimer, 1000);
+	
 	let cardsNumber;
 	do {
 		cardsNumber = Number(prompt("Com quantas cartas você quer jogar? Escolha um número par de 4 a 14."));
-
 		if (((cardsNumber % 2) !== 0) || cardsNumber < 4 || cardsNumber > 14) {
 			cardsNumber = null;
 		}
 	} while (!cardsNumber);
-	alert("O jogo vai começar com " + cardsNumber + " cartas!");
 
+	alert("O jogo vai começar com " + cardsNumber + " cartas!");
 	addCards(cardsNumber);
 	intervalId = setInterval(launchGame, 1000, cardsNumber);
-
-
 }
-let plays = 0;
+
+function addCards(number) {
+	const cards = imgs.slice(0, (number / 2));
+	for (let i = 0; i < number / 2; i++) {
+		cards.push(cards[i]);
+	}
+	shuffle(cards);
+
+	const gameContent = document.querySelector(".game-content");
+	for (let i = 0; i < number; i++) {
+		gameContent.innerHTML = gameContent.innerHTML +
+			'<div class="card" onclick="turnUp(this);">' +
+				'<div class="front-face face">' +
+					'<img src="assets/front.png" alt="">' +
+				'</div>' +
+				'<div class="back-face face">' +
+					cards[i] +
+				'</div>' +
+			'</div>'
+	}
+}
 
 function launchGame(cardsNumber) {
 	localStorage.setItem('cardsNumber', cardsNumber);
 	verifyPair();
 	if (isVictory(cardsNumber)) {
 		saveScore();
-		if (playAgain()) {
-			restartGame();
-		}
+		askToPlayAgain();
 	}
+}
+
+function verifyPair() {
+	let selectedCards = document.querySelectorAll(".selected");
+
+	if (selectedCards[0] && selectedCards[1]) {
+		if (selectedCards[0].innerHTML === selectedCards[1].innerHTML) {
+			for (let i = 0; i < selectedCards.length; i++) {
+				scorePoints(selectedCards);
+			}
+		}else {
+			setTimeout(turnDown, 1000, selectedCards);
+		}
+		selectedCards = [];
+	}
+}
+
+function scorePoints(selectedCards) {
+	for (let i = 0; i < selectedCards.length; i++) {
+		selectedCards[i].classList.add("correct");
+		selectedCards[i].classList.remove("selected");
+	}
+}
+
+function isVictory(cardsNumber) {
+	let correctCards = document.querySelectorAll(".correct");
+
+	if (correctCards.length == cardsNumber) {
+		alert("Parabéns! Você ganhou em " + plays + " jogadas.");
+		clearInterval(timerInterval);
+		clearInterval(intervalId);
+
+		return true;
+	}
+	return false;
 }
 
 function saveScore() {
@@ -70,146 +129,28 @@ function saveScore() {
 
 	rank.push(score);
 	localStorage.setItem('rank', JSON.stringify(rank));
-
 }
 
-function showRank(button) {
-	if (button.innerHTML === "VER RANK") {
-		button.innerHTML = "JOGAR";
+function askToPlayAgain() {
+	const answer = prompt("Gostaria de jogar novamente? (Digite 'sim', caso queira)");
+	if (!answer) {
+		showPlayAgainBtn();
+	}else if (answer !== "sim") {
+		askToPlayAgain();
+	}else {
+		restartGame();	
 	}
-	else {
-		button.innerHTML = "VER RANK";
-	}
-	const gameContent = document.querySelector(".game-content");
-	gameContent.classList.toggle("hide");
-	const rankList = JSON.parse(localStorage.getItem('rank'));
-
-	const scoreBoard = document.querySelector(".score-board");
-
-	if (rankList) {
-		rankList.sort(byPlays);
-		rankList.sort(byCardsNumber);
-		scoreBoard.innerHTML = "<div class='player-score title'><div class='name'>NOME</div><div class='points'>CARTAS</div><div class='points'>RODADAS</div></div>";
-		for (let i = 0; i < rankList.length; i++) {
-			scoreBoard.innerHTML += "<div class='player-score'><div class='name'>" + rankList[i].name + "</div><div class='points'>" + rankList[i].cardsNumber + "</div><div class='points'>" + rankList[i].score + "</div></div>";
-		}
-	}
-	scoreBoard.classList.toggle("show");
 }
 
-function byPlays(a, b) {
-	if (a.score < b.score)
-		return -1;
-
-	if (a.score > b.score)
-		return 1;
-
-	return 0;
-}
-
-function byCardsNumber(a, b) {
-	if (a.cardsNumber > b.cardsNumber)
-		return -1;
-
-	if (a.cardsNumber < b.cardsNumber)
-		return 1;
-
-	return 0;
-}
-
-function restartGame() {
+function restartGame() {	
 	hidePlayAgainBtn();
-	plays = 0;
-	time = 0;
-	const timer = document.querySelector(".timer");
-	timer.innerHTML = 0;
 	removeCards();
 	initGame();
 }
 
-function playAgain() {
-	let answer = prompt("Gostaria de jogar novamente? (Digite 'sim', caso queira)");
-	console.log(answer)
-	if (!answer) {
-		showPlayAgainBtn();
-		return false;
-	}
-	else if (answer !== "sim") {
-		playAgain();
-	}
-	return true;
-}
-
-function showPlayAgainBtn() {
-	const newGameBtn = document.querySelector(".newGame");
-	newGameBtn.classList.remove("hide");
-}
-
-function hidePlayAgainBtn() {
-	const newGameBtn = document.querySelector(".newGame");
-	newGameBtn.classList.add("hide");
-}
-
-function isVictory(cardsNumber) {
-	let correctCards = document.querySelectorAll(".correct");
-	if (correctCards.length == cardsNumber) {
-		alert("Parabéns! Você ganhou em " + plays + " jogadas.");
-		clearInterval(timerInterval);
-		clearInterval(intervalId);
-
-		return true;
-	}
-	return false;
-}
-
-function verifyPair() {
-
-	let selectedCards = document.querySelectorAll(".selected");
-
-	if (selectedCards[0] && selectedCards[1]) {
-		if (selectedCards[0].innerHTML === selectedCards[1].innerHTML) {
-			for (let i = 0; i < selectedCards.length; i++) {
-				scorePoints(selectedCards);
-			}
-		}
-		else {
-			setTimeout(turnDown, 1000, selectedCards);
-		}
-		selectedCards = [];
-	}
-}
-function scorePoints(selectedCards) {
-	for (let i = 0; i < selectedCards.length; i++) {
-		selectedCards[i].classList.add("correct");
-		selectedCards[i].classList.remove("selected");
-	}
-
-}
-
-function addCards(number) {
-	const cards = imgs.slice(0, (number / 2));
-	for (let i = 0; i < number / 2; i++) {
-		cards.push(cards[i]);
-	}
-	shuffle(cards);
-
-	const gameContent = document.querySelector(".game-content");
-	for (let i = 0; i < number; i++) {
-		gameContent.innerHTML = gameContent.innerHTML +
-			'<div class="card" onclick="turnUp(this);">' +
-			'<div class="front-face face">' +
-			'<img src="assets/front.png" alt="">' +
-			'</div>' +
-			'<div class="back-face face">' +
-			cards[i] +
-			'</div>' +
-			'</div>'
-	}
-}
-
-function removeCards() {
-	const gameContent = document.querySelector(".game-content");
-	gameContent.innerHTML = "";
+function askPlayerName() {
+	const name = prompt("Qual o seu nome?");
+	localStorage.setItem('name', name);
 }
 
 function turnUp(selectedCard) {
@@ -228,6 +169,34 @@ function turnDown(cards) {
 	}
 }
 
+function showRank(button) {	
+	const rankList = JSON.parse(localStorage.getItem('rank'));
+	const scoreBoard = document.querySelector(".score-board");
+
+	if (rankList) {
+		rankList.sort(byPlays);
+		rankList.sort(byCardsNumber);
+		scoreBoard.innerHTML = "<div class='player-score title'><div class='name'>NOME</div><div class='points'>CARTAS</div><div class='points'>RODADAS</div></div>";
+		for (let i = 0; i < rankList.length; i++) {
+			scoreBoard.innerHTML += "<div class='player-score'><div class='name'>" + rankList[i].name + "</div><div class='points'>" + rankList[i].cardsNumber + "</div><div class='points'>" + rankList[i].score + "</div></div>";
+		}
+	}
+
+	const gameContent = document.querySelector(".game-content");
+	gameContent.classList.toggle("hide");
+	scoreBoard.classList.toggle("show");
+	toggleRankBtn (button);
+}
+
+function toggleRankBtn(button) {
+	if (button.innerHTML === "VER RANK") {
+		button.innerHTML = "JOGAR";
+	}
+	else {
+		button.innerHTML = "VER RANK";
+	}
+}
+
 function shuffle(array) {
 	for (let i = 0; i < array.length; i++) {
 		array.sort(random);
@@ -236,4 +205,39 @@ function shuffle(array) {
 
 function random() {
 	return Math.random() - 0.5;
+}
+
+function byPlays(a, b) {
+	if (a.score < b.score)
+		return -1;
+
+	if (a.score > b.score)
+		return 1;
+
+	return 0;
+}
+
+function byCardsNumber(a, b) {
+	if (a.cardsNumber < b.cardsNumber)
+		return -1;
+
+	if (a.cardsNumber > b.cardsNumber)
+		return 1;
+
+	return 0;
+} 
+
+function showPlayAgainBtn() {
+	const newGameBtn = document.querySelector(".newGame");
+	newGameBtn.classList.remove("hide");
+}
+
+function hidePlayAgainBtn() {
+	const newGameBtn = document.querySelector(".newGame");
+	newGameBtn.classList.add("hide");
+}
+
+function removeCards() {
+	const gameContent = document.querySelector(".game-content");
+	gameContent.innerHTML = "";
 }
