@@ -92,8 +92,6 @@ function verifyPair() {
 		}
 		selectedCards = [];
 	}
-
-	console.log(plays);
 }
 
 function scorePoints(selectedCards) {
