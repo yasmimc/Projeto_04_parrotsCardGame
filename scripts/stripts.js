@@ -91,6 +91,8 @@ function verifyPair() {
 		}
 		selectedCards = [];
 	}
+
+	console.log(plays);
 }
 
 function scorePoints(selectedCards) {
@@ -154,6 +156,7 @@ function askPlayerName() {
 }
 
 function turnUp(selectedCard) {
+	removeFastClicks();
 	if (!selectedCard.classList.contains("selected")) {
 		const selectedCards = document.querySelectorAll(".selected");
 		if (selectedCards.length !== 2) {
@@ -161,6 +164,20 @@ function turnUp(selectedCard) {
 		}
 		plays++;
 	}
+}
+
+function removeFastClicks(){
+	const cards = document.querySelectorAll(".card");
+	for (let i = 0; i < cards.length; i++) {
+		cards[i].removeAttribute("onclick");
+	}
+
+	setTimeout(function(){
+		for (let i = 0; i < cards.length; i++) {
+			cards[i].setAttribute("onclick", "turnUp(this)");
+		}
+	}, 1100, cards);
+
 }
 
 function turnDown(cards) {
