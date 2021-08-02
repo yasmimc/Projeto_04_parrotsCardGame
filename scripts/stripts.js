@@ -179,8 +179,7 @@ function removeFastClicks(){
 		for (let i = 0; i < cards.length; i++) {
 			cards[i].setAttribute("onclick", "turnUp(this)");
 		}
-	}, 1100, cards);
-
+	}, 600, cards);
 }
 
 function turnDown(cards) {
