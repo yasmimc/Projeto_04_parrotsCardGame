@@ -221,11 +221,11 @@ function showRank(button) {
 }
 
 function toggleRankBtn(button) {
-	if (button.innerHTML === "VER RANK") {
+	if (button.innerHTML === "RANKING") {
 		button.innerHTML = "JOGAR";
 	}
 	else {
-		button.innerHTML = "VER RANK";
+		button.innerHTML = "RANKING";
 	}
 }
 
