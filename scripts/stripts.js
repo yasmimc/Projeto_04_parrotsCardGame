@@ -12,7 +12,7 @@ let timerInterval;
 let time = 0;
 
 
-// initGame();
+initGame();
 
 function startTimer() {
 	const timer = document.querySelector(".timer");
