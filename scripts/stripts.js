@@ -42,8 +42,7 @@ function initGame() {
 			cardsNumber = null;
 		}
 	} while (!cardsNumber);
-
-	alert("O jogo vai começar com " + cardsNumber + " cartas!");
+	
 	addCards(cardsNumber);
 	intervalId = setInterval(launchGame, 1000, cardsNumber);
 }
