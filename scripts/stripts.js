@@ -49,6 +49,7 @@ function initGame() {
 }
 
 function addCards(number) {
+	shuffle(imgs);
 	const cards = imgs.slice(0, (number / 2));
 	for (let i = 0; i < number / 2; i++) {
 		cards.push(cards[i]);
