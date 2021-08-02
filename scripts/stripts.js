@@ -89,6 +89,7 @@ function showRank(button) {
 	if (rankList) {
 		rankList.sort(byPlays);
 		rankList.sort(byCardsNumber);
+		scoreBoard.innerHTML = "<div class='player-score title'><div class='name'>NOME</div><div class='points'>CARTAS</div><div class='points'>RODADAS</div></div>";
 		for (let i = 0; i < rankList.length; i++) {
 			scoreBoard.innerHTML += "<div class='player-score'><div class='name'>" + rankList[i].name + "</div><div class='points'>" + rankList[i].cardsNumber + "</div><div class='points'>" + rankList[i].score + "</div></div>";
 		}
